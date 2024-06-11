@@ -1,0 +1,27 @@
+A_Program -> B D_C
+B -> const C | C
+C -> int id D B | float id D B | ε
+D -> ( D_A_paramlist ) D_B_FuncBody | C_A ; 
+C_A -> [ number ] = { D_EList } | C_B
+C_B -> = E | += E | -= E | ε
+D_A_paramlist -> D_B_A_param D_B_B_paramrest | ε
+D_B_A_param -> int id | float id
+D_B_B_paramrest -> , D_B_A_param D_B_B_paramrest | ε
+D_B_FuncBody -> { B D_C D_B_Returnstmt }
+D_B_Returnstmt -> return E ; | ε
+D_C -> E E_A ; D_C | if ( D_C_A ) { D_C } D_Else D_C | while ( D_C_A ) { D_C } D_C | ε
+E_A ->  = E | += E | -= E | ++ | --
+D_C_A -> E D_Relop E
+D_Relop -> < | > | <= | >= | == | !=
+D_Else -> else { D_C } | ε
+D_EList -> E D_ERest
+D_ERest -> , E D_ERest | ε
+E -> T E' | E_Call
+E_Call -> functioncall E ( E_arglist )
+E_arglist -> E E_argrest | ε
+E_argrest -> , E E_argrest | ε
+E' -> + T E' | - T E' | ε
+T -> F T'
+T' -> * F T' | / F T' | ε
+F -> ( E ) | id E_D | number
+E_D -> [ E ] | ε

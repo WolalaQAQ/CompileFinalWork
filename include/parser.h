@@ -6,29 +6,26 @@
 #define COMPILEFINALWORK_INCLUDE_PARSER_H
 
 #include "scanner.h"
-#include "symbol_table.h"
+#include "grammar.h"
 #include <vector>
+#include <string>
+#include <stack>
+#include <iostream>
 
 class Parser {
 public:
-  Parser(Scanner& scanner, SymbolTable& symbolTable);
-  void parse(const std::string& code);
+  Parser() = default;
+
+  bool parse(const Grammar &grammar, const AnswerTokens &tokens);
 
 private:
-  Scanner& scanner;
-  SymbolTable& symbolTable;
-  std::vector<Token> tokens;
-  size_t currentTokenIndex;
+  AnswerTokens tokens_;
+  int currentTokenIndex_ = 0;
 
-  void parseDeclaration();
-  void parseStructDeclaration();
-  void parseFunctionDeclaration();
-  void parseStatement();
-  void parseExpression();
-  Token currentToken();
-  Token nextToken();
-  bool matchToken(TokenType type, const std::string& value = "");
+  std::string getNextToken();
+
+  void setParser(const AnswerTokens& tokens);
+
 };
-
 
 #endif //COMPILEFINALWORK_INCLUDE_PARSER_H

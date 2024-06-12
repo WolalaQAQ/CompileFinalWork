@@ -1,148 +1,75 @@
 #include "parser.h"
 #include <iostream>
 
-Parser::Parser(Scanner& scanner, SymbolTable& symbolTable)
-	: scanner(scanner), symbolTable(symbolTable), currentTokenIndex(0) {}
-
-void Parser::parse(const std::string& code) {
-	tokens = scanner.tokenize(code);
-	currentTokenIndex = 0;
-
-	while (currentTokenIndex < tokens.size()) {
-		parseDeclaration();
+std::string Parser::getNextToken() {
+	if (currentTokenIndex_ < tokens_.size()) {
+		return tokens_[currentTokenIndex_++];
 	}
+	return "";
 }
 
-void Parser::parseDeclaration() {
-	Token token = currentToken();
+void Parser::setParser(const AnswerTokens& tokens) {
+	this->tokens_ = tokens;
+	std::cout << "tokens:\n";
+	for (const auto &token : tokens_) {
+		std::cout << token << ' ';
+	}
+	std::cout << '\n';
+	tokens_.emplace_back("$");
+	currentTokenIndex_ = 0;
+}
 
-	if (token.type == TokenType::KEYWORD) {
-		if (token.value == "struct") {
-			parseStructDeclaration();
-		} else if (token.value == "int" || token.value == "float" || token.value == "char" || token.value == "double" || token.value == "void") {
-			Token nextToken = tokens[currentTokenIndex + 1];
-			if (nextToken.type == TokenType::IDENTIFIER && tokens[currentTokenIndex + 2].value == "(") {
-				parseFunctionDeclaration();
-			} else {
-				SymbolType type;
-				if (token.value == "int") {
-					type = SymbolType::INTEGER;
-				} else if (token.value == "float") {
-					type = SymbolType::FLOAT;
-				} else if (token.value == "char") {
-					type = SymbolType::CHAR;
-				} else if (token.value == "double") {
-					type = SymbolType::DOUBLE;
-				} else {
-					type = SymbolType::UNKNOWN;
+bool Parser::parse(const Grammar &grammar, const AnswerTokens &tokens) {
+	setParser(tokens);
+
+	std::stack<std::string> parseStack;
+	parseStack.emplace("$");
+	parseStack.emplace("A_Program");
+
+	std::string currentToken = getNextToken();
+
+	while (!parseStack.empty()) {
+		std::string top = parseStack.top();
+		parseStack.pop();
+		//cout << "parseStack_Top: " << top << '\n';
+
+		if (top==currentToken) {
+			currentToken = getNextToken();
+			//cout << "successful match: " << top << " next_token: " << currentToken << '\n';
+		} else if (grammar.parseTable.find(top)!=grammar.parseTable.end()) {
+			std::cout << "Number" << currentTokenIndex_ << ":" << top << " " << currentToken << "rest "
+					  << currentTokenIndex_
+					  << '\n';
+			if (grammar.parseTable.at(top).find(currentToken)!=grammar.parseTable.at(top).end()) {
+				std::string rule = grammar.parseTable.at(top).at(currentToken);
+				if (rule!="ε") {
+					std::vector<std::string> symbols;
+					std::stringstream ss(rule);
+					std::string symbol;
+
+					while (ss >> symbol) {
+						symbols.push_back(symbol);
+
+					}
+					for (int i = symbols.size() - 1; i >= 0; --i) {
+						parseStack.push(symbols[i]);
+						std::cout << "Number" << currentTokenIndex_ << ":" << currentToken << " Rule: " << top << "->"
+								  << rule
+								  << " Push {" << symbols[i] << "} rest:" << parseStack.size() << "with i = " << i
+								  << "\n";
+					}
 				}
-
-				nextToken(); // Consume type
-				Token identifierToken = nextToken; // Consume identifier
-
-				symbolTable.addSymbol(identifierToken.value, type);
-
-				matchToken(TokenType::DELIMITER, ";"); // Consume semicolon
+			} else {
+				std::cout << "Number" << currentTokenIndex_ << ":" << top << " " << currentToken << "rest "
+						  << currentTokenIndex_
+						  << '\n';
+				return false;
 			}
-		}
-	} else {
-		parseStatement();
-	}
-}
-
-void Parser::parseStructDeclaration() {
-	matchToken(TokenType::KEYWORD, "struct");
-
-	Token structNameToken = nextToken();
-	std::string structName = structNameToken.value;
-	std::unordered_map<std::string, Symbol> members;
-
-	matchToken(TokenType::DELIMITER, "{");
-
-	while (!matchToken(TokenType::DELIMITER, "}")) {
-		Token typeToken = nextToken();
-		SymbolType type;
-
-		if (typeToken.value == "int") {
-			type = SymbolType::INTEGER;
-		} else if (typeToken.value == "float") {
-			type = SymbolType::FLOAT;
-		} else if (typeToken.value == "char") {
-			type = SymbolType::CHAR;
-		} else if (typeToken.value == "double") {
-			type = SymbolType::DOUBLE;
 		} else {
-			type = SymbolType::UNKNOWN;
+			std::cout << top << ' ' << currentToken << ' ' << currentTokenIndex_ << ' ';
+			return false;
 		}
-
-		Token memberToken = nextToken();
-		members[memberToken.value] = {type, 0, symbolTable.getSize(type)};
-
-		matchToken(TokenType::DELIMITER, ";");
 	}
 
-	symbolTable.addStructSymbol(structName, members);
-}
-
-void Parser::parseFunctionDeclaration() {
-	Token returnTypeToken = nextToken();
-	Token functionNameToken = nextToken();
-	nextToken(); // Consume '('
-
-	while (!matchToken(TokenType::DELIMITER, ")")) {
-		nextToken(); // Consume parameter list
-	}
-
-	symbolTable.addFunctionSymbol(functionNameToken.value);
-
-	matchToken(TokenType::DELIMITER, "{");
-
-	while (!matchToken(TokenType::DELIMITER, "}")) {
-		parseStatement();
-	}
-}
-
-void Parser::parseStatement() {
-	Token token = currentToken();
-
-	if (token.type == TokenType::KEYWORD) {
-		if (token.value == "if" || token.value == "while") {
-			nextToken(); // Consume 'if' or 'while'
-			matchToken(TokenType::DELIMITER, "(");
-			parseExpression();
-			matchToken(TokenType::DELIMITER, ")");
-			parseStatement();
-		}
-	} else if (token.type == TokenType::IDENTIFIER) {
-		parseExpression();
-		matchToken(TokenType::DELIMITER, ";");
-	} else {
-		nextToken(); // Consume unknown statement
-	}
-}
-
-void Parser::parseExpression() {
-	nextToken(); // For simplicity, assume single token expressions
-}
-
-Token Parser::currentToken() {
-	if (currentTokenIndex < tokens.size()) {
-		return tokens[currentTokenIndex];
-	}
-	return {TokenType::END, ""};
-}
-
-Token Parser::nextToken() {
-	if (currentTokenIndex < tokens.size()) {
-		return tokens[currentTokenIndex++];
-	}
-	return {TokenType::END, ""};
-}
-
-bool Parser::matchToken(TokenType type, const std::string& value) {
-	if (currentTokenIndex < tokens.size() && tokens[currentTokenIndex].type == type && (value.empty() || tokens[currentTokenIndex].value == value)) {
-		++currentTokenIndex;
-		return true;
-	}
-	return false;
+	return true;
 }

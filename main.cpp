@@ -1,9 +1,10 @@
-#include "compiler.h"
-#include <iostream>
+#include <QApplication>
 
-int main() {
-	Compiler compiler;
-	compiler.processFile("/home/wolala/Documents/CompilePractice/CompileFinalWork/example/example.c");
-	compiler.printSymbolTable();
-	return 0;
+#include "gui/mainwindow.h"
+
+int main(int argc, char *argv[]) {
+	QApplication app(argc, argv);
+	MainWindow mainWindow;
+	mainWindow.show();
+	return QApplication::exec();
 }

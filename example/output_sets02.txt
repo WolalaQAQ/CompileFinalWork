@@ -1,0 +1,122 @@
+FIRST sets:
+FIRST(A_Program) = {( const float functioncall id if int number while ε }
+FIRST(B) = {const float int ε }
+FIRST(C) = {float int ε }
+FIRST(C_A) = {+= -= = [ ε }
+FIRST(C_B) = {+= -= = ε }
+FIRST(D) = {( += -= ; = [ }
+FIRST(D_A_paramlist) = {float int ε }
+FIRST(D_B_A_param) = {float int }
+FIRST(D_B_B_paramrest) = {, ε }
+FIRST(D_B_FuncBody) = {{ }
+FIRST(D_B_Returnstmt) = {return ε }
+FIRST(D_C) = {( functioncall id if number while ε }
+FIRST(D_C_A) = {( functioncall id number }
+FIRST(D_EList) = {( functioncall id number }
+FIRST(D_ERest) = {, ε }
+FIRST(D_Else) = {else ε }
+FIRST(D_Relop) = {!= < <= == > >= }
+FIRST(E) = {( functioncall id number }
+FIRST(E') = {+ - ε }
+FIRST(E_A) = {++ += -- -= = }
+FIRST(E_Call) = {functioncall }
+FIRST(E_D) = {[ ε }
+FIRST(E_arglist) = {( functioncall id number ε }
+FIRST(E_argrest) = {, ε }
+FIRST(F) = {( id number }
+FIRST(T) = {( id number }
+FIRST(T') = {* / ε }
+
+FOLLOW sets:
+FOLLOW(A_Program) = {$ }
+FOLLOW(B) = {$ ( functioncall id if number return while } }
+FOLLOW(C) = {$ ( functioncall id if number return while } }
+FOLLOW(C_A) = {; }
+FOLLOW(C_B) = {; }
+FOLLOW(D) = {$ ( const float functioncall id if int number return while } }
+FOLLOW(D_A_paramlist) = {) }
+FOLLOW(D_B_A_param) = {) , }
+FOLLOW(D_B_B_paramrest) = {) }
+FOLLOW(D_B_FuncBody) = {$ ( const float functioncall id if int number return while } }
+FOLLOW(D_B_Returnstmt) = {} }
+FOLLOW(D_C) = {$ return } }
+FOLLOW(D_C_A) = {) }
+FOLLOW(D_EList) = {} }
+FOLLOW(D_ERest) = {} }
+FOLLOW(D_Else) = {$ ( functioncall id if number return while } }
+FOLLOW(D_Relop) = {( functioncall id number }
+FOLLOW(E) = {!= ( ) ++ += , -- -= ; < <= = == > >= ] } }
+FOLLOW(E') = {!= ( ) ++ += , -- -= ; < <= = == > >= ] } }
+FOLLOW(E_A) = {; }
+FOLLOW(E_Call) = {!= ( ) ++ += , -- -= ; < <= = == > >= ] } }
+FOLLOW(E_D) = {!= ( ) * + ++ += , - -- -= / ; < <= = == > >= ] } }
+FOLLOW(E_arglist) = {) }
+FOLLOW(E_argrest) = {) }
+FOLLOW(F) = {!= ( ) * + ++ += , - -- -= / ; < <= = == > >= ] } }
+FOLLOW(T) = {!= ( ) + ++ += , - -- -= ; < <= = == > >= ] } }
+FOLLOW(T') = {!= ( ) + ++ += , - -- -= ; < <= = == > >= ] } }
+
+SELECT sets:
+SELECT(A_Program -> B D_C ) = {$ ( const float functioncall id if int number while ε }
+SELECT(B -> C ) = {$ ( float functioncall id if int number return while } ε }
+SELECT(B -> const C ) = {const }
+SELECT(C -> float id D B ) = {float }
+SELECT(C -> int id D B ) = {int }
+SELECT(C -> ε ) = {$ ( functioncall id if number return while } ε }
+SELECT(C_A -> C_B ) = {+= -= ; = ε }
+SELECT(C_A -> [ number ] = { D_EList } ) = {[ }
+SELECT(C_B -> += E ) = {+= }
+SELECT(C_B -> -= E ) = {-= }
+SELECT(C_B -> = E ) = {= }
+SELECT(C_B -> ε ) = {; ε }
+SELECT(D -> ( D_A_paramlist ) D_B_FuncBody ) = {( }
+SELECT(D -> C_A ; ) = {+= -= ; = [ }
+SELECT(D_A_paramlist -> D_B_A_param D_B_B_paramrest ) = {float int }
+SELECT(D_A_paramlist -> ε ) = {) ε }
+SELECT(D_B_A_param -> float id ) = {float }
+SELECT(D_B_A_param -> int id ) = {int }
+SELECT(D_B_B_paramrest -> , D_B_A_param D_B_B_paramrest ) = {, }
+SELECT(D_B_B_paramrest -> ε ) = {) ε }
+SELECT(D_B_FuncBody -> { B D_C D_B_Returnstmt } ) = {{ }
+SELECT(D_B_Returnstmt -> return E ; ) = {return }
+SELECT(D_B_Returnstmt -> ε ) = {} ε }
+SELECT(D_C -> E E_A ; D_C ) = {( functioncall id number }
+SELECT(D_C -> if ( D_C_A ) { D_C } D_Else D_C ) = {if }
+SELECT(D_C -> while ( D_C_A ) { D_C } D_C ) = {while }
+SELECT(D_C -> ε ) = {$ return } ε }
+SELECT(D_C_A -> E D_Relop E ) = {( functioncall id number }
+SELECT(D_EList -> E D_ERest ) = {( functioncall id number }
+SELECT(D_ERest -> , E D_ERest ) = {, }
+SELECT(D_ERest -> ε ) = {} ε }
+SELECT(D_Else -> else { D_C } ) = {else }
+SELECT(D_Else -> ε ) = {$ ( functioncall id if number return while } ε }
+SELECT(D_Relop -> != ) = {!= }
+SELECT(D_Relop -> < ) = {< }
+SELECT(D_Relop -> <= ) = {<= }
+SELECT(D_Relop -> == ) = {== }
+SELECT(D_Relop -> > ) = {> }
+SELECT(D_Relop -> >= ) = {>= }
+SELECT(E -> E_Call ) = {functioncall }
+SELECT(E -> T E' ) = {( id number }
+SELECT(E' -> + T E' ) = {+ }
+SELECT(E' -> - T E' ) = {- }
+SELECT(E' -> ε ) = {!= ( ) ++ += , -- -= ; < <= = == > >= ] } ε }
+SELECT(E_A -> ++ ) = {++ }
+SELECT(E_A -> += E ) = {+= }
+SELECT(E_A -> -- ) = {-- }
+SELECT(E_A -> -= E ) = {-= }
+SELECT(E_A -> = E ) = {= }
+SELECT(E_Call -> functioncall E ( E_arglist ) ) = {functioncall }
+SELECT(E_D -> [ E ] ) = {[ }
+SELECT(E_D -> ε ) = {!= ( ) * + ++ += , - -- -= / ; < <= = == > >= ] } ε }
+SELECT(E_arglist -> E E_argrest ) = {( functioncall id number }
+SELECT(E_arglist -> ε ) = {) ε }
+SELECT(E_argrest -> , E E_argrest ) = {, }
+SELECT(E_argrest -> ε ) = {) ε }
+SELECT(F -> ( E ) ) = {( }
+SELECT(F -> id E_D ) = {id }
+SELECT(F -> number ) = {number }
+SELECT(T -> F T' ) = {( id number }
+SELECT(T' -> * F T' ) = {* }
+SELECT(T' -> / F T' ) = {/ }
+SELECT(T' -> ε ) = {!= ( ) + ++ += , - -- -= ; < <= = == > >= ] } ε }

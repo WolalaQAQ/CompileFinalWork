@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ScannerGUI</class>
+ <widget class="QWidget" name="ScannerGUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1600</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ScannerGUI</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="1">
+    <widget class="QTableWidget" name="pTableWidget">
+     <column>
+      <property name="text">
+       <string>界符</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="iLabel">
+     <property name="text">
+      <string>符号I表</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QTableWidget" name="iTableWidget">
+     <column>
+      <property name="text">
+       <string>名称</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QLabel" name="cLabel">
+     <property name="text">
+      <string>常数C表</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QTableWidget" name="cTableWidget">
+     <column>
+      <property name="text">
+       <string>类型</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>数值</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="kLabel">
+     <property name="text">
+      <string>关键字K表</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTableWidget" name="kTableWidget">
+     <column>
+      <property name="text">
+       <string>关键字</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="pLabel">
+     <property name="text">
+      <string>界符P表</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="4">
+    <widget class="QPushButton" name="startPushButton">
+     <property name="text">
+      <string>开始词法分析</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

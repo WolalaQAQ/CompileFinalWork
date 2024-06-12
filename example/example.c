@@ -1,38 +1,27 @@
-struct Point {
-  int x;
-  int y;
-};
+const int constInt = 10;
+const float constReal = 20.0;
+int Integer = 30;
+float Real = 40.0;
+int intArray[10] = {0};
+float floatArray[10] = {0.0};
+int addNum = 0;
 
 int add(int a, int b) {
 	return a + b;
 }
 
 int main() {
-	int a, b, c;
-	float d;
-	double e;
-	char f;
-	struct Point p;
-
-	a = 2;
-	b = a + 5;
-	d = 3.14;
-	e = 2.71828;
-	f = 'A';
-
-	if (a > b) {
-		a = b;
+	if (Integer > constInt) {
+		Integer = constInt;
 	} else {
-		b = a;
+		Integer = constInt - 10;
 	}
 
-	while (a < 10) {
-		a = a + 1;
+	while (Real != 0) {
+		Real--;
 	}
 
-	c = add(a, b);
-	p.x = a;
-	p.y = b;
+	addNum = functioncall add(1, 2);
 
 	return 0;
 }

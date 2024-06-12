@@ -8,22 +8,23 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
-if(Qt5_FOUND)
+# 尝试查找 Qt5，使用 QUIET 选项避免警告
+find_package(Qt5 COMPONENTS Core Gui Widgets QUIET)
+if (Qt5_FOUND)
     # 使用 Qt5
     set(Qt_VERSION_PREFIX "Qt5")
     message(STATUS "Using Qt5")
-else()
+else ()
     # 尝试查找 Qt6
     find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
-    if(Qt6_FOUND)
+    if (Qt6_FOUND)
         # 使用 Qt6
         set(Qt_VERSION_PREFIX "Qt6")
         message(STATUS "Using Qt6")
-    else()
+    else ()
         message(FATAL_ERROR "Neither Qt6 nor Qt5 could be found")
-    endif()
-endif()
+    endif ()
+endif ()
 
 include_directories(include)
 
@@ -38,10 +39,8 @@ add_executable(my_compiler
         ${HEADER_FILES}
 )
 
-target_link_libraries(
-        my_compiler
+target_link_libraries(my_compiler
         ${Qt_VERSION_PREFIX}::Core
         ${Qt_VERSION_PREFIX}::Widgets
         ${Qt_VERSION_PREFIX}::Gui
 )
-

@@ -10,37 +10,46 @@
 #include <QString>
 
 /* Standard Headers */
-#include <string>
 #include <memory>
+#include <string>
 
 /* Self-defined Headers */
 #include "scanner_gui.h"
+#include "grammar_gui.h"
+#include "parser_gui.h"
 
 class ScannerGUI;
+class GrammarGUI;
+class ParserGUI;
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui {
+    class MainWindow;
+}
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow {
-Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit MainWindow(QWidget *parent = nullptr);
-  ~MainWindow() override;
+    explicit MainWindow(QWidget *parent = nullptr);
+    ~MainWindow() override;
 
 private:
-  Ui::MainWindow *ui;
-  ScannerGUI* scanner_gui_;
-  QString code_qstring_;
+    Ui::MainWindow *ui;
+
+    ScannerGUI *scanner_gui_ = nullptr;
+    GrammarGUI *grammar_gui_ = nullptr;
+    ParserGUI *parser_gui_ = nullptr;
+
+    QString code_qstring_;
 
 private slots:
-  void readCode();
-  void changeCode();
+    void readCode();
+    void changeCode();
 
-  signals:
-	void sendCode(const QString &code);
-
+signals:
+    void sendCode(const QString &code);
 };
 
-#endif //COMPILEFINALWORK_GUI_MAINWINDOW_H
+#endif//COMPILEFINALWORK_GUI_MAINWINDOW_H

@@ -16,6 +16,9 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="1">
     <widget class="QTableWidget" name="pTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <column>
       <property name="text">
        <string>界符</string>
@@ -32,6 +35,9 @@
    </item>
    <item row="1" column="2">
     <widget class="QTableWidget" name="iTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <column>
       <property name="text">
        <string>名称</string>
@@ -48,6 +54,9 @@
    </item>
    <item row="1" column="3">
     <widget class="QTableWidget" name="cTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <column>
       <property name="text">
        <string>类型</string>
@@ -69,6 +78,9 @@
    </item>
    <item row="1" column="0">
     <widget class="QTableWidget" name="kTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <column>
       <property name="text">
        <string>关键字</string>

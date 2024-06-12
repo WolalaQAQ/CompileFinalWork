@@ -5,27 +5,28 @@
 #ifndef COMPILEFINALWORK_INCLUDE_PARSER_H
 #define COMPILEFINALWORK_INCLUDE_PARSER_H
 
-#include "scanner.h"
 #include "grammar.h"
-#include <vector>
-#include <string>
-#include <stack>
+#include "scanner.h"
 #include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
 
 class Parser {
 public:
-  Parser() = default;
+    Parser() = default;
 
-  bool parse(const Grammar &grammar, const AnswerTokens &tokens);
+    bool parse(const ParseTable &parse_table, const AnswerTokens &tokens);
+
+    inline std::vector<std::string> getHistory() const { return history_; }
 
 private:
-  AnswerTokens tokens_;
-  int currentTokenIndex_ = 0;
+    AnswerTokens tokens_;
+    int currentTokenIndex_ = 0;
+    std::vector<std::string> history_;
 
-  std::string getNextToken();
-
-  void setParser(const AnswerTokens& tokens);
-
+    std::string getNextToken();
+    void setTokens(const AnswerTokens &tokens);
 };
 
-#endif //COMPILEFINALWORK_INCLUDE_PARSER_H
+#endif//COMPILEFINALWORK_INCLUDE_PARSER_H

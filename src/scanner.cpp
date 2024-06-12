@@ -206,7 +206,7 @@ std::vector<Token> Scanner::lexAnalyse(const std::string &code) {
     return tokens;
 }
 
-AnswerTokens Scanner::get_AnswerTokens(const std::string &codes) {
+void Scanner::scan(const std::string &codes) {
     initTokenMap();
     //	std::string codes;
     //	std::cout << "enter your programe(end at the last line with \"END\")\n";
@@ -223,7 +223,6 @@ AnswerTokens Scanner::get_AnswerTokens(const std::string &codes) {
     //	std::cout << "input:" << codes << '\n';
 
     tokens_ = lexAnalyse(codes);
-    AnswerTokens answer_tokens;
 
     if (!isError) {
         std::vector<std::pair<std::string, TokenInfo>> sortedSymbols(symbolTable.begin(), symbolTable.end());
@@ -236,14 +235,13 @@ AnswerTokens Scanner::get_AnswerTokens(const std::string &codes) {
 
         for (auto &token: tokens_) {
             if (token.second.type == "P" || token.second.type == "K") {
-                answer_tokens.push_back(token.first);
+                answer_tokens_.push_back(token.first);
             } else if (token.second.type == "I") {
-                answer_tokens.emplace_back("id");
+                answer_tokens_.emplace_back("id");
             } else {
-                answer_tokens.emplace_back("number");
+                answer_tokens_.emplace_back("number");
             }
         }
     }
 
-    return answer_tokens;
 }

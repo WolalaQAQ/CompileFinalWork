@@ -10,7 +10,7 @@
 #include <QFileDialog>
 #include <QTreeWidget>
 
-#include "gui/dialogs.h"
+#include "gui/dialog.h"
 
 GrammarGUI::GrammarGUI(QWidget *parent) : QWidget(parent), ui(new Ui::GrammarGUI) {
     ui->setupUi(this);
@@ -28,7 +28,7 @@ GrammarGUI::~GrammarGUI() {
 void GrammarGUI::setGrammarFilePath() {
     grammar_file_path_ = QFileDialog::getOpenFileName(this, tr("Open Grammar File"), "", tr("Grammar Files (*.txt)"));
     if (grammar_file_path_.isEmpty()) {
-        dialogs::showErrorDialog("No file selected.");
+        dialog::showDialog("No file selected.", QMessageBox::Critical);
         return;
     }
     ui->inputLineEdit->setText(grammar_file_path_);
@@ -37,7 +37,7 @@ void GrammarGUI::setGrammarFilePath() {
 void GrammarGUI::setSetsFilePath() {
     sets_file_path_ = QFileDialog::getSaveFileName(this, tr("Save Sets File"), "", tr("Sets Files (*.txt)"));
     if (sets_file_path_.isEmpty()) {
-        dialogs::showErrorDialog("No file selected.");
+        dialog::showDialog("No file selected.", QMessageBox::Critical);
         return;
     }
     ui->outputLineEdit->setText(sets_file_path_);
@@ -45,7 +45,7 @@ void GrammarGUI::setSetsFilePath() {
 
 void GrammarGUI::getSets() {
     if (grammar_file_path_.isEmpty() || sets_file_path_.isEmpty()) {
-        dialogs::showErrorDialog("Please select grammar file and sets file.");
+        dialog::showDialog("Please select grammar file and sets file.", QMessageBox::Critical);
         return;
     }
 
@@ -53,7 +53,7 @@ void GrammarGUI::getSets() {
     grammar_.compute();
     grammar_.write_sets_to_file(sets_file_path_.toStdString());
 
-    dialogs::showInfoDialog("Sets generated successfully.");
+    dialog::showDialog("Sets generated successfully.", QMessageBox::Information);
 
     // 先填充First集和Follow集的可视化
     auto first_set = grammar_.getFirstSet();

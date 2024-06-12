@@ -7,7 +7,7 @@
 #include "gui/mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "gui/dialogs.h"
+#include "gui/dialog.h"
 
 #include <QDebug>
 #include <QFile>
@@ -25,11 +25,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     parser_gui_ = new ParserGUI(this);
     parser_gui_->hide();
 
+    ir_generator_gui_ = new IRGeneratorGUI(this);
+    ir_generator_gui_->hide();
+
     connect(ui->readCodeAction, &QAction::triggered, this, &MainWindow::readCode);
     connect(ui->codeTextEdit, &QTextEdit::textChanged, this, &MainWindow::changeCode);
     connect(ui->scannerPushButton, &QPushButton::clicked, scanner_gui_, [this] {
         if (code_qstring_.isEmpty()) {
-            dialogs::showErrorDialog("No code to scan.");
+            dialog::showDialog("No code to scan.", QMessageBox::Critical);
             return;
         }
         scanner_gui_->show();
@@ -40,10 +43,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     });
     connect(ui->parserPushButton, &QPushButton::clicked, parser_gui_, [this] {
         if (code_qstring_.isEmpty()) {
-            dialogs::showErrorDialog("No code to parse.");
+            dialog::showDialog("No code to parse.", QMessageBox::Critical);
             return;
         }
         parser_gui_->show();
+        emit sendCode(code_qstring_);
+    });
+    connect(ui->irGeneratorPushButton, &QPushButton::clicked, ir_generator_gui_, [this] {
+        if (code_qstring_.isEmpty()) {
+            dialog::showDialog("No code to generate IR.", QMessageBox::Critical);
+            return;
+        }
+        ir_generator_gui_->show();
         emit sendCode(code_qstring_);
     });
 }
@@ -55,13 +66,13 @@ MainWindow::~MainWindow() {
 void MainWindow::readCode() {
     QString codePath = QFileDialog::getOpenFileName(this, tr("Open Code File"), "", tr("C Source Files (*.c)"));
     if (codePath.isEmpty()) {
-        dialogs::showErrorDialog("No file selected.");
+        dialog::showDialog("No file selected.", QMessageBox::Critical);
         return;
     }
 
     QFile codeFile(codePath);
     if (!codeFile.open(QIODevice::ReadOnly)) {
-        dialogs::showErrorDialog("Failed to open file.");
+        dialog::showDialog("Failed to open file.", QMessageBox::Critical);
         return;
     }
 

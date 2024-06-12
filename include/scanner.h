@@ -18,16 +18,18 @@ struct TokenInfo {
 
 using AnswerTokens = std::vector<std::string>;
 using Token = std::pair<std::string, TokenInfo>;
+using Tokens = std::vector<Token>;
 
 class Scanner {
 public:
     Scanner() = default;
-    AnswerTokens get_AnswerTokens(const std::string &codes);
+    void scan(const std::string &code);
 
-    [[nodiscard]] inline std::vector<Token> getTokens() const { return tokens_; }
+    [[nodiscard]] inline Tokens getTokens() const { return tokens_; }
     [[nodiscard]] inline std::vector<std::string> getKeywordList() const { return keywordList; }
     [[nodiscard]] inline std::vector<std::string> getDelimiterList() const { return delimiterList; }
     [[nodiscard]] inline std::map<std::string, TokenInfo> getSymbolTable() const { return symbolTable; }
+    [[nodiscard]] inline AnswerTokens getAnswerTokens() const { return answer_tokens_; }
 
 private:
     int isError = 0;
@@ -38,18 +40,20 @@ private:
 
     std::vector<std::string> delimiterList =
             {"-", "/", "(", ")", "==", "!=", "<=", "<", "+", "*", ">", ">=", "=", ",", ";", "++", "--", "{", "}", "?",
-             "[",
-             "]", "+=", "-="};
+             "[", "]", "+=", "-="};
 
     std::map<std::string, TokenInfo> symbolTable;
+
     int identifierCount = 0;
     int constantIntCount = 0;
     int constantRealCount = 0;
     int constantCharCount = 0;
     int constantStringCount = 0;
+
     std::map<std::string, TokenInfo> tokenMap;
 
-    std::vector<Token> tokens_;
+    Tokens tokens_;
+    AnswerTokens answer_tokens_;
 
     static inline bool isLetter(char ch) {
         return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');

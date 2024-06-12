@@ -52,6 +52,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="irGeneratorPushButton">
+        <property name="text">
+         <string>中间代码生成</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>

@@ -12,7 +12,7 @@
 
 #include <map>
 
-#include "gui/dialogs.h"
+#include "gui/dialog.h"
 
 ScannerGUI::ScannerGUI(MainWindow *main_window, QWidget *parent) : main_window_(main_window), QWidget(parent), ui(new Ui::ScannerGUI) {
     ui->setupUi(this);
@@ -29,7 +29,7 @@ ScannerGUI::~ScannerGUI() {
 
 void ScannerGUI::scanCode() {
     if (code_qstring_.isEmpty()) {
-        dialogs::showErrorDialog("No code to scan.");
+        dialog::showDialog("No code to scan.", QMessageBox::Critical);
         return;
     }
 
@@ -56,7 +56,8 @@ void ScannerGUI::scanCode() {
         ui->pTableWidget->setItem(i, 0, delimiter_item);
     }
 
-    auto answer_tokens = scanner_.get_AnswerTokens(code_qstring_.toStdString());
+    scanner_.scan(code_qstring_.toStdString());
+    auto answer_tokens = scanner_.getAnswerTokens();
     auto tokens = scanner_.getTokens();
     // 新建一个mao来记录tokens，防止重复
     std::map<std::string, TokenInfo> token_map;

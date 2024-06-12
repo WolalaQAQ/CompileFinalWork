@@ -18,7 +18,7 @@ public:
 
     bool parse(const ParseTable &parse_table, const AnswerTokens &tokens);
 
-    inline std::vector<std::string> getHistory() const { return history_; }
+    [[nodiscard]] inline std::vector<std::string> getHistory() const { return history_; }
 
 private:
     AnswerTokens tokens_;

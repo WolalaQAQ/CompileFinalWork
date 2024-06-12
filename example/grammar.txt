@@ -1,58 +1,27 @@
-1)<program> ∷= <block>
-2)<block> ∷= {<decls> <stmts>}
-3)<decls> ∷=<decls> <decl> | ε
-4)<decl> ∷= int <aid>; | bool <bid>;
-5)<aid> ∷= <ID>
-6)<bid> ∷= <ID>
-7)<stmts> ∷= <stmts> <stmt> | ε
-8)<stmt> ∷= <aid> = <aexpr>; | <bid> = <bexpr>; | if (<bexpr>) <stmt>; |  if (<bexpr>) <stmt> else <stmt>; | while (<bexpr>) <stmt>; | write <aexpr>; | read <aid>; |  <block>
-9)<aexpr> ∷= <aterm> + <aterm> | <aterm> - <aterm> | <aterm>
-10)<aterm> ∷= <afactor> * <afactor> | <afactor> / <afactor> | <afactor>
-11)<afactor> ∷= <aid> | NUM | (<aexpr>)
-12)<bexpr> ∷= <bexpr> || <bterm> | <bterm>
-13)<bterm> ∷= <bterm> && <bfactor> | <bfactor>
-14)<bfactor> ∷= <bid> | true | false | ! <bfactor> | (<bexpr>) | <rel>
-15)<rel> ∷= (<aid>|NUM) (< | <= | > | >= | == | !=) <aexpr>
-
-
-
-CODE := CODEPART | CODE CODEPART
-CODEPART := FUNC_DEF | FUNC_STMT | VAR_DEF | VAR_STMT
-FUNC_DEF := <type> FUNC_IDENTIFIER (PARAMETERS_N) BLOCK
-FUNC_STMT := <type> FUNC_IDENTIFIER(PARAMETERS_N);
-VAR_DEF := <type> VAR_IDENTIFIER = EXPR;
-VAR_STMT := <type> VAR_IDENTIFIER;
-FUNC_IDENTIFIER := <identifier>
-VAR_IDENTIFIER := <identifier>
-PARAMETERS_N := PARAMETERS | <none>
-PARAMETERS := PARAMETER | PARAMETERS, PARAMETER
-PARAMETER := <type> <identifier>
-BLOCK := {SENTENCES_N}
-SENTENCES_N := SENTENCES | <none>
-SENTENCES := SENTENCE | SENTENCES SENTENCE
-SENTENCE := EXPR_N; | ASSIGN_STC | FOR_STC | WHILE_STC | DO_STC | IF_STC | SWITCH_STC | BREAK_STC | CONTINUE_STC | VAR_STMT | VAR_DEF | RETURN_STC
-S_OR_B := BLOCK
-FOR_STC := <for>(FOR_EXPRS) S_OR_B
-FOR_EXPRS := EXPR_AN; EXPR_AN; EXPR_AN
-EXPR_AN := ASSIGN_EXP | EXPR | <none>
-WHILE_STC := <while>(EXPR) S_OR_B
-DO_STC := <do> S_OR_B <while>(EXPR)
-BREAK_STC := <break>;
-CONTINUE_STC := <continue>;
-IF_STC := <if>(EXPR) S_OR_B ELSE_STC_N
-ELSE_STC_N := ELSE_STC | <none>
-ELSE_STC := <else> S_OR_B
-SWITCH_STC := <switch>(EXPR){CS_OR_D}
-CS_OR_D := CASES_N | CASES_N DEFAULT_STC
-CASES_N := CASES | <none>
-CASES := CASE_STC | CASES CASE_STC
-CASE_STC := <case> EXPR:S_OR_B
-DEFAULT_STC := <default>:S_OR_B
-RETURN_STC := <return> EXPR_N;
-EXPR_N := EXPR | <none>
-ASSIGN_EXP := VAR_IDENTIFIER = EXPR 
-ASSIGN_STC := ASSIGN_EXP;
-EXPR :=  <identifier> | <number> | <sizeof>(TYPE) | <opr_minus> <number> | <opr_left> EXPR | ( EXPR ) |  FUNC_CALL | EXPR <opr_right> | EXPR <opr_two> EXPR | EXPR <opr_minus> EXPR 
-FUNC_CALL := <identifier>(COMMA_EXP)
-COMMA_EXP := EXPR | COMMA_EXP, EXPR
-TYPE := <type>
+A_Program -> B D_C
+B -> const C | C
+C -> int id D B | float id D B | ε
+D -> ( D_A_paramlist ) D_B_FuncBody | C_A ; 
+C_A -> [ number ] = { D_EList } | C_B
+C_B -> = E | += E | -= E | ε
+D_A_paramlist -> D_B_A_param D_B_B_paramrest | ε
+D_B_A_param -> int id | float id
+D_B_B_paramrest -> , D_B_A_param D_B_B_paramrest | ε
+D_B_FuncBody -> { B D_C D_B_Returnstmt }
+D_B_Returnstmt -> return E ; | ε
+D_C -> E E_A ; D_C | if ( D_C_A ) { D_C } D_Else D_C | while ( D_C_A ) { D_C } D_C | ε
+E_A ->  = E | += E | -= E | ++ | --
+D_C_A -> E D_Relop E
+D_Relop -> < | > | <= | >= | == | !=
+D_Else -> else { D_C } | ε
+D_EList -> E D_ERest
+D_ERest -> , E D_ERest | ε
+E -> T E' | E_Call
+E_Call -> functioncall E ( E_arglist )
+E_arglist -> E E_argrest | ε
+E_argrest -> , E E_argrest | ε
+E' -> + T E' | - T E' | ε
+T -> F T'
+T' -> * F T' | / F T' | ε
+F -> ( E ) | id E_D | number
+E_D -> [ E ] | ε

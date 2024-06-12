@@ -17,10 +17,12 @@
 #include "scanner_gui.h"
 #include "grammar_gui.h"
 #include "parser_gui.h"
+#include "ir_generator_gui.h"
 
 class ScannerGUI;
 class GrammarGUI;
 class ParserGUI;
+class IRGeneratorGUI;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -41,6 +43,7 @@ private:
     ScannerGUI *scanner_gui_ = nullptr;
     GrammarGUI *grammar_gui_ = nullptr;
     ParserGUI *parser_gui_ = nullptr;
+    IRGeneratorGUI *ir_generator_gui_ = nullptr;
 
     QString code_qstring_;
 

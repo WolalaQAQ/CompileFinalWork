@@ -10,7 +10,7 @@
 #include <QFileDialog>
 #include <QListWidget>
 
-#include "gui/dialogs.h"
+#include "gui/dialog.h"
 
 ParserGUI::ParserGUI(MainWindow *main_window, QWidget *parent) : main_window_(main_window),
                                                                  QWidget(parent),
@@ -31,7 +31,7 @@ ParserGUI::~ParserGUI() {
 void ParserGUI::setGrammarFilePath() {
     grammar_file_path_ = QFileDialog::getOpenFileName(this, tr("Open Grammar File"), "", tr("Grammar Files (*.txt)"));
     if (grammar_file_path_.isEmpty()) {
-        dialogs::showErrorDialog("No file selected.");
+        dialog::showDialog("No file selected.", QMessageBox::Critical);
         return;
     }
     ui->inputLineEdit->setText(grammar_file_path_);
@@ -39,7 +39,7 @@ void ParserGUI::setGrammarFilePath() {
 
 void ParserGUI::startParse() {
     if (grammar_file_path_.isEmpty()) {
-        dialogs::showErrorDialog("Please select grammar file.");
+        dialog::showDialog("Please select grammar file.", QMessageBox::Critical);
         return;
     }
 
@@ -47,13 +47,14 @@ void ParserGUI::startParse() {
     grammar_.compute();
     auto parse_table = grammar_.getParseTable();
 
-    auto answer_tokens = scanner_.get_AnswerTokens(code_qstring_.toStdString());
+    scanner_.scan(code_qstring_.toStdString());
+    auto answer_tokens = scanner_.getAnswerTokens();
 
     auto parse_result = parser_.parse(parse_table, answer_tokens);
     if (parse_result) {
-        dialogs::showInfoDialog("Parse successfully.");
+        dialog::showDialog("Parse successfully.", QMessageBox::Information);
     } else {
-        dialogs::showErrorDialog("Parse failed.");
+        dialog::showDialog("Parse failed.", QMessageBox::Critical);
     }
 
     auto parse_history = parser_.getHistory();

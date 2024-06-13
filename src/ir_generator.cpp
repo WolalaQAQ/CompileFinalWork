@@ -303,9 +303,9 @@ void IRGenerator::form(const std::vector<std::pair<std::string, TokenInfo>>& tok
     for (const auto &s: symb) {
         std::cout << "(" << s.index << "):\t" << s.name << "\t" << s.type << "\t" << s.category << "\t" << s.address << "\n";
     }
-    std::cout << "VALL:\n";
-    while (!vall.empty()) {
-        std::cout << vall.top().first << '\t' << vall.top().second << '\n';
-        vall.pop();
-    }
+//    std::cout << "VALL:\n";
+//    while (!vall.empty()) {
+//        std::cout << vall.top().first << '\t' << vall.top().second << '\n';
+//        vall.pop();
+//    }
 }

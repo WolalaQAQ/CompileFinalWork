@@ -38,6 +38,7 @@ public:
 
     [[nodiscard]] inline std::vector<Quadruple> getQuadruples() const { return quar; }
     [[nodiscard]] inline std::vector<Symbol> getSymbolTable() const { return symb; }
+    [[nodiscard]] inline std::stack<std::pair<std::string, int>> getVall() const { return vall; }
 
 private:
     std::vector<Quadruple> quar;

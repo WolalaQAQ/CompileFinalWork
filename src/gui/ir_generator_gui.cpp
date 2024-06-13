@@ -80,4 +80,20 @@ void IRGeneratorGUI::generateIR() {
         ui->symbolTableWidget->setItem(symbol.index - 1, 3, address_item);
     }
 
+    auto vall = ir_generator_.getVall();
+    ui->vallTableWidget->setRowCount(vall.size());
+    int row = 0;
+    while (!vall.empty()) {
+        auto [name, value] = vall.top();
+        vall.pop();
+
+        auto* name_item = new QTableWidgetItem(QString::fromStdString(name));
+        ui->vallTableWidget->setItem(row, 0, name_item);
+
+        auto* value_item = new QTableWidgetItem(QString::number(value));
+        ui->vallTableWidget->setItem(row, 1, value_item);
+
+        ++row;
+    }
+
 }

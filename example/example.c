@@ -21,6 +21,9 @@ int main() {
         Real--;
     }
 
+    intArray[1] = 2;
+    floatArray[2] = 3.14;
+
     addNum = functioncall add(1, 2);
 
     return 0;

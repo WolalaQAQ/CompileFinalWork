@@ -112,4 +112,5 @@ void GrammarGUI::getSets() {
             child_items.emplace_back(child_item);
         }
     }
+    ui->selectTreeWidget->expandAll();
 }

@@ -14,8 +14,18 @@
    <string>IRGeneratorGUI</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="1">
+    <widget class="QLabel" name="symbolTableLabel">
+     <property name="text">
+      <string>符号表</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QTableWidget" name="quadrupleTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <column>
       <property name="text">
        <string>运算符</string>
@@ -47,6 +57,9 @@
    </item>
    <item row="1" column="1">
     <widget class="QTableWidget" name="symbolTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <column>
       <property name="text">
        <string>名称</string>
@@ -69,14 +82,31 @@
      </column>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="symbolTableLabel">
+   <item row="0" column="2">
+    <widget class="QLabel" name="vallLabel">
      <property name="text">
-      <string>符号表</string>
+      <string>活动记录</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
+   <item row="1" column="2">
+    <widget class="QTableWidget" name="vallTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <column>
+      <property name="text">
+       <string>名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>地址</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
     <widget class="QPushButton" name="startPushButton">
      <property name="text">
       <string>开始</string>

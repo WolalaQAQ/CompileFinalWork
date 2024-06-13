@@ -38,8 +38,8 @@ void ScannerGUI::scanCode() {
     auto keywordList = scanner_.getKeywordList();
     auto delimiterList = scanner_.getDelimiterList();
 
-    ui->kTableWidget->clear();
-    ui->pTableWidget->clear();
+//    ui->kTableWidget->clear();
+//    ui->pTableWidget->clear();
 
     // 设置表格的行数
     ui->kTableWidget->setRowCount(keywordList.size());
@@ -63,9 +63,15 @@ void ScannerGUI::scanCode() {
     std::map<std::string, TokenInfo> token_map;
 
     // 填充词法分析结果
-    ui->iTableWidget->clear();
-    ui->cTableWidget->clear();
+//    ui->iTableWidget->clear();
+//    ui->cTableWidget->clear();
     for (const auto &token: tokens) {
+        ui->tokenTableWidget->setRowCount(ui->tokenTableWidget->rowCount() + 1);
+        auto *token_value_item = new QTableWidgetItem(QString::fromStdString(token.first));
+        auto *token_type_item = new QTableWidgetItem(QString::fromStdString(token.second.type));
+        ui->tokenTableWidget->setItem(ui->tokenTableWidget->rowCount() - 1, 0, token_value_item);
+        ui->tokenTableWidget->setItem(ui->tokenTableWidget->rowCount() - 1, 1, token_type_item);
+
         // 如果该token已经存在，则跳过
         if (token_map.find(token.first) != token_map.end()) {
             continue;

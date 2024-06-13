@@ -14,7 +14,21 @@
    <string>ScannerGUI</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1">
+   <item row="0" column="2">
+    <widget class="QLabel" name="pLabel">
+     <property name="text">
+      <string>界符P表</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="kLabel">
+     <property name="text">
+      <string>关键字K表</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
     <widget class="QTableWidget" name="pTableWidget">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
@@ -26,14 +40,7 @@
      </column>
     </widget>
    </item>
-   <item row="0" column="2">
-    <widget class="QLabel" name="iLabel">
-     <property name="text">
-      <string>符号I表</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
+   <item row="1" column="3">
     <widget class="QTableWidget" name="iTableWidget">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
@@ -45,14 +52,7 @@
      </column>
     </widget>
    </item>
-   <item row="0" column="3">
-    <widget class="QLabel" name="cLabel">
-     <property name="text">
-      <string>常数C表</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
+   <item row="1" column="4">
     <widget class="QTableWidget" name="cTableWidget">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
@@ -69,14 +69,7 @@
      </column>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="kLabel">
-     <property name="text">
-      <string>关键字K表</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
+   <item row="1" column="1">
     <widget class="QTableWidget" name="kTableWidget">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
@@ -88,14 +81,45 @@
      </column>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="pLabel">
+   <item row="0" column="4">
+    <widget class="QLabel" name="cLabel">
      <property name="text">
-      <string>界符P表</string>
+      <string>常数C表</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="4">
+   <item row="0" column="3">
+    <widget class="QLabel" name="iLabel">
+     <property name="text">
+      <string>符号I表</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="tokenLabel">
+     <property name="text">
+      <string>Tokens</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTableWidget" name="tokenTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <column>
+      <property name="text">
+       <string>值</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>类型</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="5">
     <widget class="QPushButton" name="startPushButton">
      <property name="text">
       <string>开始词法分析</string>
